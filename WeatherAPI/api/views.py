@@ -1,6 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.core.cache import cache
+
 from .api_functions import get_weather_data
 
 
@@ -25,9 +27,19 @@ class WeatherView(APIView):
         elif country.isnumeric():
             return Response({"error": "the country must be alphabetic"}, status=400)
 
+        headers = {"content-type": "application/json"}
+
+        city = city.lower()
+        cache_key = city + country
+        cache_data = cache.get(cache_key)
+
+        if cache_data:
+            return Response(cache_data, headers=headers)
+
         status, data = get_weather_data(city, country)
 
         if status != 200:
-            return Response({"error": data["message"]}, status=status)
+            return Response({"error": data["message"]}, status=status, headers=headers)
 
-        return Response(data)
+        cache.set(cache_key, data, 120)
+        return Response(data, headers=headers)
