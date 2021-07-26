@@ -104,7 +104,7 @@ def process_data(data):
     res_data["geo_coordinates"] = f"[{str(lon)}, {str(lat)}]"
 
     res_data["requested_time"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    
+
     temp_min_c = kelvin_2_celsius(data["main"]["temp_min"])
     temp_max_c = kelvin_2_celsius(data["main"]["temp_max"])
     forecast = {"temp_min_c": f"{temp_min_c} °C",

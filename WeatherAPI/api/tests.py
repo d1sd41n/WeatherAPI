@@ -5,6 +5,7 @@ from .api_functions import (request_weather_data, kelvin_2_celsius,
                             kelvin_2_fahrenheit, timestamp_2_time,
                             process_data, get_weather_data)
 
+
 class TestApi(APITestCase):
 
     @classmethod
